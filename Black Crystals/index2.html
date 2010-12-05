@@ -1,0 +1,214 @@
+
+<html >
+<head>
+<script type="text/javascript" src="yqlgeo.js"></script>
+ <script type="text/javascript">
+ 
+ var lang,lat,place,country,obj;
+ 
+function getloc(){
+
+navigator.geolocation.getCurrentPosition(function(position) {
+   lat = position.coords.latitude;
+   lang = position.coords.longitude;
+      initialize();
+	yqlgeo.get(latitude,longitude,function(o){
+  alert(o.place.name + ',' + o.place.country.content);
+  place=o.place.name;
+  country=o.place.country.content;
+  obj.init();
+	  });}
+	  }
+function initi()
+{
+var arg=document.getElementById("q").value;
+
+yqlgeo.get(arg,function(o){
+  
+    lat=o.place.centroid.latitude;
+    lang=o.place.centroid.longitude;
+  initialize();
+});
+}
+	  
+	  function initialize() {
+	      
+      if (GBrowserIsCompatible()) {
+        var map = new GMap2(document.getElementById("map"));
+	     map.setCenter(new GLatLng(lat, lang), 13);
+        map.setUIToDefault();
+		var location=new GLatLng(lat,lang);
+	var marker=new GMarker(location);
+	map.addOverlay(marker);
+       }
+GEvent.addListener(map, "click", getCoordinate);
+function getCoordinate(overlay, point) {
+  if (!overlay) {
+    var longitude = point.lng();ln=longitude;
+    var latitude =  point.lat();lt=latitude;
+	map.removeOverlay(marker);
+	var location=new GLatLng(latitude,longitude);
+	 marker=new GMarker(location);
+	map.addOverlay(marker);
+	yqlgeo.get(latitude,longitude,function(o){
+  alert(o.place.name + ',' + o.place.country.content);
+  place=o.place.name;
+  country=o.place.country.content;
+
+  obj.init();
+  
+})
+  }
+	   }
+	   }
+	   
+
+
+var obj =
+{
+    init :function()
+  {
+    obj.y= document.getElementById('y');
+    obj.b = document.getElementById('b');
+    obj.r = document.getElementById('r');
+	
+    //obj.b.onclick =
+	obj.pingSearch();
+  },
+  pingSearch : function()
+  {
+    //if (obj.y.value)
+    //{
+      obj.s = document.createElement('script');
+      obj.s.type ='text/javascript';
+      obj.s.charset ='utf-8';
+      obj.s.src = 'http://search.yahooapis.com/WebSearchService/V1/webSearch?appid=YahooDemo&output=json&callback=obj.pongSearch&query=' +place+" hotels";
+      
+	  document.getElementsByTagName('head')[0].appendChild(obj.s);
+	  
+    //}
+  },
+  pongSearch : function(z)
+  {
+    obj.r.innerHTML = '';
+    for (var i = 0; i < z.ResultSet.Result.length; i++)
+    {
+      var li = document.createElement('li');
+      var a = document.createElement('a');
+      a.href = z.ResultSet.Result[i].Url;
+      a.innerHTML = z.ResultSet.Result[i].Title;
+      li.appendChild(a);
+      obj.r.appendChild(li);
+    }
+  }
+};
+/*
+window.onload = function()
+{
+    obj.init();
+};
+*/
+
+
+  
+  </script>
+<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAAzr2EBOXUKnm_jVnk0OJI7xSosDVG8KKPE1-m51RBrvYughuyMxQ-i1QfUnH94QxWIa6N4U6MouMmBA"
+            type="text/javascript"></script>
+
+    
+    <title>Test map Api</title>
+	<link rel="stylesheet" href="css/stylesheet.css" type="text/css" media="screen" /> 
+</head>
+
+<body onload="getloc()" onunload="GUnload()">
+	<div id="wrapper"><!-- Begin wrapper -->
+	
+		<div id="header"><!-- Begin header -->
+			<h1><a href="#" title="Back to home">Geo-formation</a></h1>
+			<p>Geological Dircetory & help</p>
+			
+		</div>
+		
+		<hr />
+		
+		
+		<div id="outer-space"><!-- Begin outer-space -->
+		
+			<div id="hfeed">
+				
+				<p id="page-info"><span>Maps</span></p>
+				
+				<div class="hentry">
+				<div id="map" style="width: 100%; height: 50%">
+				</div>
+		
+									
+				</div>
+				
+								
+				
+				
+			</div>
+			<div id="hfeed">
+			
+			<p id="page-info"><span>Hotels</span></p>
+			<ul id="r"></ul>
+			
+			</div>
+			<div id="hfeed">
+			<p id="page-info"><span>twitter</span></p>
+			<div id="twitter"></div>
+			
+			
+			</div>
+			<div id="hfeed">
+			<p id="page-info"><span></span></p>
+			<div id="weather"></div>
+			
+			
+			</div>
+			
+			
+			</div>
+			
+			
+			<hr />
+			
+					
+			
+			
+		</div><!-- End outer-space -->
+		
+		<hr />
+		
+		<div id="right-sidebar">
+		
+<form action="">
+<input type="text" id="q">
+<input type="button" value="search" id="b" onclick="initi()">Search</button>
+
+</form>		
+				
+	
+		
+		<div class="clear"></div>
+		<h1><br>Team Black Crytals</br></h1>
+		<li>
+		<ol>Sushruth</ol>
+		<ol>Charan</ol>
+		<ol>Ratan</ol>
+		<ol>Djd</ol>
+		</li>
+		<hr />
+			</div>
+		
+		<div id="footer">
+			
+		</div>
+	
+	</div><!-- End wrapper -->
+	
+
+
+</body>
+</html>

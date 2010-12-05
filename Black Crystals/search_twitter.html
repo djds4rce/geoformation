@@ -1,0 +1,68 @@
+<html>
+  <head><title>YQL and RSS: Yahoo! Top News Stories</title>
+  <style type='text/css'>
+    #results{ width: 60%; margin-left: 10%; border: 1px solid gray; padding: 5px; height: 500px; overflow: auto; } 
+  </style>
+
+
+  <script type='text/javascript'>
+
+function test()
+{
+var place=document.getElementById('place').value;
+var p="http://query.yahooapis.com/v1/public/yql?";
+var q="q=select%20*%20from%20google.search%20where%20q%3D'"+place+"'%3B";
+var s="&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=cbfunc";
+
+
+
+var src1=p+q+s;
+    
+var s = document.createElement('script');
+    s.type ='text/javascript';
+    s.charset ='utf-8';
+    s.src =src1;   
+      document.getElementsByTagName('body')[0].appendChild(s);
+
+
+
+}
+
+// Parses returned response and extracts
+    // the title, links, and text of each news story.
+    function cbfunc(o){
+	
+      var items = o.query.results.results;
+      var output = '';
+      var no_items=items.length;
+      for(var i=0;i<no_items;i++){
+        var title = items[i].title;
+        var link = items[i].url;
+        var desc = items[i].content;
+        output += "<h3><a href='" + link + "'>"+title+"</a></h3>" + desc + "<hr/>";
+      }
+      // Place news stories in div tag
+      document.getElementById('results').innerHTML = output;  
+    }
+    </script>
+
+
+
+
+
+
+ </head>
+  <body>
+    <!-- Div tag for stories results -->
+    <div id='results'></div>
+    <!-- The YQL statment will be assigned to src.
+ <script src='http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20twitter.search%20where%20q%3D
+"openhack"%3B&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=cbfunc'> 
+</script>
+ -->
+<input type="text" id="place" /><input type="button" value="click" onclick="test()" />
+
+<div id="t"><ul></ul></div>
+
+  </body>
+</html>
